@@ -1,8 +1,7 @@
 # Makefile for KGEN-generated kernel
 
 FC := ifort
-#FC_FLAGS :=  -O2 -g -fp-model source -convert big_endian -assume byterecl -ftz -traceback -assume realloc_lhs  -xAVX -qopt-report=5 
-FC_FLAGS :=  -O3 -xAVX -ftz -I./ -fimf-precision=low -no-prec-sqrt -no-prec-div -override-limits -qopt-report=5 -no-inline-max-total-size -inline-factor=200
+FC_FLAGS :=  -O3 -xCORE-AVX2 -fma -ftz -I./ -fimf-precision=low -no-prec-sqrt -no-prec-div -override-limits -qopt-report=5 -no-inline-max-total-size -inline-factor=200
 
 ALL_OBJS := kernel_driver.o micro_mg_cam.o kgen_utils.o micro_mg_utils.o shr_const_mod.o micro_mg2_0.o shr_kind_mod.o shr_spfn_mod.o wv_sat_methods.o
 
