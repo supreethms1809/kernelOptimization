@@ -62,8 +62,7 @@ def main():
     out, err = run_shcmd('top -n1 -b')
     tests['top'] = out.rstrip()
 
-    now = datetime.datetime.now()
-    tests['begin'] = [ now.date(), now.time() ]
+    tests['begin'] = str(datetime.datetime.now())
 
     tests['tests'] = {}
 
@@ -87,11 +86,13 @@ def main():
             # modify makefile list
 
             try:
-                summary = {'etime': [], 'diff': [], 'tol': 0.0, 'passed': False}
+                summary = {'etime': [], 'diff': [], 'tol': 0.0, 'passed': False, 'begin': str(datetime.datetime.now()), 'end': 'Not completed'}
                 tests['tests'][dirName] = summary
 
                 # run test
                 out, err = run_shcmd('make -f %s'%MAKEFILE, cwd=dirName)
+
+                summary['end'] = str(datetime.datetime.now())
 
                 npassed = 0
                 nfailed = 0
@@ -161,8 +162,7 @@ def main():
             finally:
                 out, err = run_shcmd('make -f %s clean'%MAKEFILE, cwd=dirName)
 
-    now = datetime.datetime.now()
-    tests['end'] = [ now.date(), now.time() ]
+    tests['end'] = str(datetime.datetime.now())
 
     with open('%s_result.json'%tests['gitbranch'], 'w') as f:
         json.dump(tests, f, sort_keys=True, indent=4)
