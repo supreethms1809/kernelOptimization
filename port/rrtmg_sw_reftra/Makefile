@@ -4,10 +4,13 @@ FC := ifort
 FC_FLAGS_SNB :=  -O2 -fp-model source -convert big_endian -assume byterecl -ftz -traceback -assume realloc_lhs  -xHost -vec-threshold0 -qopt-report=5 -align array256byte
 FC_FLAGS_HSW :=  -O2 -fp-model source -convert big_endian -assume byterecl -ftz -traceback -assume realloc_lhs -vec-threshold0 -xCORE-AVX2 -qopt-report=5 -align array256byte
 FC_FLAGS_PHI :=  -mmic -O2 -fp-model source -convert big_endian -assume byterecl -ftz -traceback -assume realloc_lhs -vec-threshold0 -qopt-report=5 -align array256byte
+FC_FLAGS_KNL :=  -xMIC-AVX512 -O2 -fp-model source -convert big_endian -assume byterecl -ftz -traceback -assume realloc_lhs -vec-threshold0 -qopt-report=5 -align array256byte
 
-FC_FLAGS := ${FC_FLAGS_SNB}
+#FC_FLAGS := ${FC_FLAGS_SNB}
 #FC_FLAGS := ${FC_FLAGS_HSW}
 #FC_FLAGS := ${FC_FLAGS_PHI}
+FC_FLAGS := ${FC_FLAGS_KNL}
+
 
 ALL_OBJS := kernel_driver.o rrtmg_sw_spcvmc.o kgen_utils.o rrsw_vsn.o rrtmg_sw_reftra.o shr_kind_mod.o rrsw_tbl.o
 

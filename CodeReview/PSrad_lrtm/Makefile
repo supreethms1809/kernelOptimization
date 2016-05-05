@@ -1,7 +1,7 @@
 # Makefile for KGEN-generated kernel
 
 FC := ifort
-FC_FLAGS := -O3 -xAVX -ftz -funroll-loops  -ip -no-fp-port -fp-model fast -no-prec-div -no-prec-sqrt -override-limits -align array64byte -DCPRINTEL -mkl 
+FC_FLAGS := -xMIC-AVX512 -O3 -ftz -funroll-loops  -ip -no-fp-port -fp-model fast -no-prec-div -no-prec-sqrt -override-limits -align array64byte -DCPRINTEL -mkl 
 #FC_FLAGS := -O3 -xHost
 ALL_OBJS := kernel_driver.o mo_psrad_interface.o mo_lrtm_kgs.o mo_cld_sampling.o mo_lrtm_solver.o mo_rrtm_coeffs.o mo_exception_stub.o mo_physical_constants.o mo_radiation_parameters.o mo_kind.o mo_spec_sampling.o mo_random_numbers.o mo_lrtm_setup.o mo_math_constants.o mo_rrtm_params.o mo_rad_fastmath.o mo_taumol03.o mo_taumol04.o mo_lrtm_driver.o mo_lrtm_gas_optics.o 
 
