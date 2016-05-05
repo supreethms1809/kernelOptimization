@@ -1,6 +1,6 @@
+# Makefile for KGEN-generated kernel
 .SUFFIXES:
 .SUFFIXES: .o .f .F90 .f90
-# Makefile for KGEN-generated kernel
 
 FC := ifort
 #FC_FLAGS :=  -O2 -fp-model source -convert big_endian -assume byterecl -ftz -traceback -assume realloc_lhs  -xAVX

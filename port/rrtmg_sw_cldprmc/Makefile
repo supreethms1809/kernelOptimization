@@ -1,7 +1,7 @@
 # Makefile for KGEN-generated kernel
 
 FC := ifort
-FC_FLAGS :=  -O2 -fp-model source -convert big_endian -assume byterecl -ftz -traceback -assume realloc_lhs  -xAVX
+FC_FLAGS :=  -xCORE-AVX2 -O2 -fp-model source -convert big_endian -assume byterecl -ftz -traceback -assume realloc_lhs
 
 ALL_OBJS := kernel_driver.o rrtmg_sw_rad.o kgen_utils.o shr_kind_mod.o rrtmg_sw_cldprmc.o rrsw_wvn.o rrsw_cld.o parrrsw.o rrsw_vsn.o
 

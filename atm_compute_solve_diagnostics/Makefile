@@ -1,6 +1,6 @@
 # Makefile for KGEN-generated kernel
 
-FC := mpiifort 
+FC := ifort 
 DEFINE := -DSINGLE_PRECISION
 
 #FC_FLAGS := $(DEFINE) -O2 -fp-model source -convert big_endian -assume byterecl -ftz -traceback -assume realloc_lhs  -xAVX
@@ -10,7 +10,7 @@ DEFINE := -DSINGLE_PRECISION
 
 # SINGLE_PRECISION flags 
 # FC_FLAGS := $(DEFINE) -qopt-report=5  -O3 -xCORE-AVX2 -convert big_endian -FR
-FC_FLAGS := $(DEFINE) -pgo -align array32byte -qopt-report=5  -O3 -xAVX -convert big_endian -FR
+FC_FLAGS := $(DEFINE) -xCORE-AVX2 -pgo -align array32byte -qopt-report=5  -O3 -convert big_endian -FR
 #FC_FLAGS := $(DEFINE) -qopt-report=5  -O3 -xHost -convert big_endian -FR
 
 ALL_OBJS := kernel_driver.o mpas_atm_time_integration.o kgen_utils.o mpas_kinds_types.o

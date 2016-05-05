@@ -20,6 +20,8 @@ SRCS =	mo_aero_kinne.f90 mo_aero_volc_stub.f90 mo_cld_sampling.f90 \
 
 OBJS := $(SRCS:.f90=.o)
 
+F90FLAGS := -xCORE-AVX2
+
 all: $(PROG)
 
 $(PROG): $(OBJS) 
