@@ -80,7 +80,7 @@ def main():
 
                 etime = in_testcase[u'etime']
                 if len(etime)==0: continue
-                if sum(etime)/len(etime)<10.0: continue
+                #if sum(etime)/len(etime)<10.0: continue
                 if any([ e<=0 for e in etime ]): continue
 
                 passed = in_testcase[u'passed']
