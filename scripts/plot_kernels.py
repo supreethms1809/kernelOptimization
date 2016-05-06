@@ -18,7 +18,10 @@ except:
     print 'ERROR: matplotlib module is not loaded.'
     sys.exit(-1)
 
-REF_NAME = 'SNB'
+TITLE_SIZE = 24
+LABEL_SIZE = 18 
+REF_NAME = 'HSW'
+#REF_NAME = 'SNB'
 CPU_MODEL_NAME = re.compile(u'^model\sname[\t\s]+:\s(?P<modelname>.+$)', re.M)
 
 def getinfo(string, pattern, method='search', **flags):
@@ -77,7 +80,8 @@ def main():
 
                 etime = in_testcase[u'etime']
                 if len(etime)==0: continue
-                #if sum(etime)/len(etime)<10.0: continue
+                if sum(etime)/len(etime)<10.0: continue
+                if any([ e<=0 for e in etime ]): continue
 
                 passed = in_testcase[u'passed']
                 diff = in_testcase[u'diff']
@@ -121,7 +125,10 @@ def main():
             print str(e)
             sys.exit(-1)
                 
-    # pack data for plotting and reporting
+
+    # let reference platform on the first column
+    platform_labels[platform_labels.index(REF_NAME)], platform_labels[0] = \
+        platform_labels[0], platform_labels[platform_labels.index(REF_NAME)]
 
     # collect reference data from reference platform
     ref_data = tests[REF_NAME]
@@ -151,24 +158,76 @@ def main():
 
     #import pdb; pdb.set_trace()
 
+    # general page
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.axis([0, 10, -20, 0])
+    j = 0
+    for platform, test in tests.items():
+        ax.text(1, j, platform)
+        j -= 1
+        ax.text(3, j, 'CPU Model Name : %s'%test['cpuname'])
+        j -= 1
+        ax.text(3, j, 'Test Date/Time : %s'%test['testdatetime'])
+        j -= 1
+        ax.text(3, j, 'Compiler : %s'%test['ifort'])
+        j -= 1
+        ax.text(3, j, '')
+        j -= 1
+        ax.text(3, j, '')
+    ax.axis('off')
+    fig.tight_layout()
+    pdf.savefig(fig)
+
+    # kernels page
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.axis([0, 10, -1*len(plot_etime), 0])
+    for i, (casename, etime) in enumerate(plot_etime.items()):
+        ax.text(2, -i, '(%d) %s'%(i, casename), ha='left')
+    ax.axis('off')
+    fig.tight_layout()
+    pdf.savefig(fig)
+
+    # average performance ratio page
+
+
+    # histogram of average performance ratio page
+
+    # selective average performance ratio pages
+
+
+    # cluster analsys pages
+
+
+    # cluster page
+    fig, ax = plt.subplots(figsize=(10, 6))
+    #ax.subtitle('kernels arranged by KNL/HSW performance ratio', fontsize=TITLE_SIZE)
+    #ax.xlabel('Performance Ratio (KNL/HSW)', fontsize=LABEL_SIZE)
+    ax.axis([0, 2, 0, 0.7])
+    for i, (casename, etime) in enumerate(plot_etime.items()):
+        ax.text(1, etime[platform_labels.index('KNL')], '(%d)'%i, ha='center')
+    #ax.axis('off')
+    #fig.tight_layout()
+    pdf.savefig(fig)
+
+    # relative pages
     width = 0.7
     interval = 1.0
     for casename, etime in plot_etime.items():
         fig = plt.figure(figsize=(10, 6))
-        #barplots = []
         xticks = []
         for i in range(len(platform_labels)):
             barplot = plt.bar(i + interval/2 - width/2, etime[i], width, color=color_names[i])
+            if etime[i]>0:
+                plt.text(i + interval/2, etime[i]+0.05, "{:5.2f}".format(etime[i]), ha='center', va='bottom')
             xticks.append(i + interval/2)
-            #barplots.append(barplot)
         #plt.legend(barplots, platform_labels)
-        plt.title(casename)
-        plt.xlabel('platform')
-        plt.ylabel('Relative Performance to SNB')
+        plt.title(casename, fontsize=TITLE_SIZE)
+        plt.ylim([ 0.0, max(etime)*1.1 ])
+        plt.xlabel('platform', fontsize=LABEL_SIZE)
+        plt.ylabel('Relative Performance to %s'%REF_NAME, fontsize=LABEL_SIZE)
         plt.xticks(xticks, platform_labels)
         pdf.savefig(fig)
         #plt.show()
-
 
     pdf.close()
 
